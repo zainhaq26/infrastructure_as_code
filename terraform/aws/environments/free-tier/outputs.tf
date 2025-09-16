@@ -17,23 +17,23 @@ output "environment" {
 # EC2 Outputs
 output "ec2_instance_id" {
   description = "ID of the EC2 instance"
-  value       = module.ec2_free_tier.instance_ids[0]
+  value       = aws_instance.free_tier.id
 }
 
 output "ec2_instance_public_ip" {
   description = "Public IP address of the EC2 instance"
-  value       = module.ec2_free_tier.instance_public_ips[0]
+  value       = aws_instance.free_tier.public_ip
 }
 
 output "ec2_instance_public_dns" {
   description = "Public DNS name of the EC2 instance"
-  value       = module.ec2_free_tier.instance_public_dns[0]
+  value       = aws_instance.free_tier.public_dns
 }
 
 # EBS Outputs
 output "ebs_volume_id" {
   description = "ID of the EBS volume"
-  value       = module.ebs_free_tier.volume_id
+  value       = aws_ebs_volume.free_tier.id
 }
 
 # ECS Outputs
@@ -50,5 +50,5 @@ output "ecs_cluster_name" {
 # CloudWatch Outputs
 output "cloudwatch_log_group_name" {
   description = "Name of the CloudWatch log group"
-  value       = module.cloudwatch_free_tier.log_group_name
+  value       = aws_cloudwatch_log_group.free_tier.name
 }
