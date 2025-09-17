@@ -83,3 +83,31 @@
 #     FreeTier    = "true"
 #   }
 # }
+
+# EKS Cluster
+# Note: EKS is NOT included in AWS Free Tier, but this configuration uses minimal resources
+# Uncomment the lines below to deploy EKS (will incur costs)
+# module "eks_free_tier" {
+#   source = "../../modules/eks"
+#   cluster_name = "${var.project_name}-eks-cluster"
+#   kubernetes_version = "1.28"
+#   subnet_ids = module.vpc_eks.public_subnet_ids
+#   endpoint_private_access = false
+#   endpoint_public_access  = true
+#   public_access_cidrs     = ["0.0.0.0/0"]
+#   enabled_cluster_log_types = ["api", "audit"]
+#   log_retention_in_days     = 1
+#   create_node_group = true
+#   node_group_name   = "main"
+#   capacity_type     = "ON_DEMAND"
+#   instance_types    = ["t3.micro"]
+#   desired_size = 1
+#   max_size     = 1
+#   min_size     = 1
+#   max_unavailable_percentage = 25
+#   tags = {
+#     Environment = "free-tier"
+#     Purpose     = "learning"
+#     FreeTier    = "true"
+#   }
+# }
