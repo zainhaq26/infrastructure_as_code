@@ -29,6 +29,18 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+# Get default VPC and subnets
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
 # ECS Cluster
 module "ecs_free_tier" {
   source = "../../../modules/ecs"
@@ -37,6 +49,38 @@ module "ecs_free_tier" {
   
   # Task definition
   task_definition_family = "${var.project_name}-free-tier-task"
+  
+  # Container definition
+  container_definitions = jsonencode([
+    {
+      name  = "nginx"
+      image = "nginx:latest"
+      portMappings = [
+        {
+          containerPort = 80
+          protocol      = "tcp"
+        }
+      ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.project_name}-free-tier-ecs"
+          "awslogs-region"        = var.aws_region
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+    }
+  ])
+  
+  # Service configuration
+  service_name = "${var.project_name}-free-tier-service"
+  
+  # Network configuration for Fargate
+  network_configuration = {
+    subnets          = data.aws_subnets.default.ids
+    security_groups  = []
+    assign_public_ip = true
+  }
   
   # Minimal Fargate resources
   cpu           = "256"        # Minimum for Fargate

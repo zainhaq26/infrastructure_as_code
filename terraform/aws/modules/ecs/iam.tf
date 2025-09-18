@@ -66,7 +66,7 @@ resource "aws_iam_role" "ecs_service_role" {
 
 # Attach the required policies to the ECS service role
 resource "aws_iam_role_policy_attachment" "ecs_service_policy" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSServiceRolePolicy"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
   role       = aws_iam_role.ecs_service_role.name
 }
 
