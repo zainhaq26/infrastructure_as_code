@@ -6,6 +6,9 @@ module "ecs_free_tier" {
 
   cluster_name = "${var.project_name}-free-tier-ecs"
   
+  # Task definition
+  task_definition_family = "${var.project_name}-free-tier-task"
+  
   # Minimal Fargate resources
   cpu           = "256"        # Minimum for Fargate
   memory        = "512"        # Minimum for Fargate
